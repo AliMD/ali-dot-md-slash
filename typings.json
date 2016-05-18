@@ -1,0 +1,8 @@
+{
+  "name": "ali-dot-md-slash",
+  "dependencies": {},
+  "globalDevDependencies": {
+    "debug": "registry:dt/debug#0.0.0+20160317120654",
+    "node": "registry:dt/node#6.0.0+20160514165920"
+  }
+}
