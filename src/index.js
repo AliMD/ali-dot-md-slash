@@ -18,7 +18,6 @@ config = {
 
 main = () => {
   log('App start');
-  checkConfig();
   makeServer();
 },
 
@@ -27,10 +26,11 @@ makeServer = () => {
   .createServer(serverListener)
   .listen(config.port, config.host)
   ;
+  log(`Server start on http://${config.host}:${config.port}/`);
 },
 
 serverListener = (request, responce) => {
-  
+  log('req!');
 }
 
 ;main();
