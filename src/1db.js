@@ -13,13 +13,13 @@ export default class oneDB {
     this.dbPath = dbPath;
     this.saveDelay = 5000;
     this._data = [];
-    this._open();
+    this.open();
   }
 
   /**
    * Open json file
    */
-  _open (dbPath = this.dbPath) {
+  open (dbPath = this.dbPath) {
     log(`open: ${dbPath}`);
     this._data = oneDB.readJsonFile(dbPath);
   }
