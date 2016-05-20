@@ -12,7 +12,7 @@ export default class oneDB {
     log('init');
     this.dbPath = dbPath;
     this.saveDelay = 5000;
-    this._data = [];
+    this.data = [];
     this.open();
   }
 
@@ -22,15 +22,15 @@ export default class oneDB {
   open (dbPath = this.dbPath) {
     log(`open: ${dbPath}`);
     let fileData = oneDB.readJsonFile(dbPath, {data: {}});
-    this._data = fileData.data;
+    this.data = fileData.data;
   }
 
   /**
    * Inser new item
    */
-  insert (obj) {
+  insert (id, obj) {
     log('insert');
-
+    this.data[id] = obj;
     this.save();
   }
 
@@ -40,7 +40,7 @@ export default class oneDB {
   query (query) {
     log('query', query);
     let id = query.replace(' ', '_');
-    return this._data[id] || null;
+    return this.data[id] || null;
   }
 
   /**
@@ -68,7 +68,7 @@ export default class oneDB {
       }, this.saveDelay);
     } else {
       log('Save db');
-      oneDB.writeJsonFile(this.dbPath, this._data);
+      oneDB.writeJsonFile(this.dbPath, this.data);
     }
   }
 
