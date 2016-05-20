@@ -6,6 +6,7 @@
 import http from 'http';
 import debug from 'debug';
 import * as shortener from './shortener.js';
+import URL from 'url';
 
 const
 
@@ -33,18 +34,38 @@ makeServer = () => {
 
 serverListener = (req, res) => {
   log(`New request: ${req.url}`);
+  req.url = URL.parse(req.url);
 
-  if (req.url === config.not_found) {
-    res.writeHead(404, {'Content-Type': 'text/plain'});
-    res.end('Not Found !');
-    return;
+  if (!checkInternalRouters(req, res)) {
+    redirect();
   }
 
-  let expanded = shortener.find(req.url) || {url: config.not_found};
+  res.end();
+},
+
+checkInternalRouters = (req, res) => {
+  let ret = true;
+  switch (req.url.path) {
+    case config.not_found:
+      page404();
+    default:
+      ret = false;
+  }
+  return ret;
+},
+
+page404 = (req, res) => {
+  res.writeHead(404, {
+    'Content-Type': 'text/html'
+  });
+  res.write('<h1 style="text-align: \'center\'; margin-top: 2em;">Not found!</h1>');
+},
+
+redirect = (req, res) => {
+  let expanded = shortener.find(req.url.pathname) || {url: config.not_found};
   res.writeHead(expanded.mode === 'permanently' ? 301 : 302, {
     Location: expanded.url
   });
-  res.end();
 }
 
 ;main();
