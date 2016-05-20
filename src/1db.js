@@ -90,14 +90,14 @@ export default class oneDB {
     data = JSON.parse(fileContent)
     ;
 
-    log(`${fileContent.length} characters and ${data.length} item loaded`);
+    log(`${fileContent.length} characters loaded`);
     return data;
   }
 
   static writeJsonFile(path, data) {
     log(`writeJsonFile ${path}`);
     let json = JSON.stringify(data, null, 2);
-    log(`${json.length} characters and ${data.length} item saved`);
+    log(`${json.length} characters saved`);
     return fs.writeFileSync(path, json);
   }
 
