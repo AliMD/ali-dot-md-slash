@@ -29,7 +29,7 @@ export default class oneDB {
    * Inser new item
    */
   insert (id, obj) {
-    log('insert');
+    log(`insert ${id}`);
     this.data[id] = obj;
     this.save();
   }
@@ -68,7 +68,7 @@ export default class oneDB {
       }, this.saveDelay);
     } else {
       log('Save db');
-      oneDB.writeJsonFile(this.dbPath, this.data);
+      oneDB.writeJsonFile(this.dbPath, {data: this.data});
     }
   }
 
