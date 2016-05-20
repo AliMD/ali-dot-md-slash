@@ -15,6 +15,7 @@ export function cleanUrl (url) {
   let path = URL.parse(url).pathname.toLowerCase().trim();
   if (path.indexOf('/') === 0) path = path.substr(1);
   if (path.lastIndexOf('/') === path.length-1) path = path.substr(0, path.length-1);
+  if (path.trim().length === 0) path = '/';
   log(`${url} => ${path}`);
   return path;
 }
@@ -22,7 +23,7 @@ export function cleanUrl (url) {
 export function find (url) {
   log(`find url`);
   url = cleanUrl(url);
-  let item = db.query({short: url});
+  let item = db.query(url);
   return item || false
 }
 
