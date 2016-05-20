@@ -13,15 +13,16 @@ export default class oneDB {
     this.dbPath = dbPath;
     this.saveDelay = 5000;
     this._data = [];
-    this._open();
+    this.open();
   }
 
   /**
    * Open json file
    */
-  _open (dbPath = this.dbPath) {
+  open (dbPath = this.dbPath) {
     log(`open: ${dbPath}`);
-    this._data = oneDB.readJsonFile(dbPath);
+    let fileData = oneDB.readJsonFile(dbPath, {data: {}});
+    this._data = fileData.data;
   }
 
   /**
@@ -30,7 +31,7 @@ export default class oneDB {
   insert (obj) {
     log('insert');
 
-    this._save();
+    this.save();
   }
 
   /**
@@ -38,8 +39,8 @@ export default class oneDB {
    */
   query (query) {
     log('query', query);
-    let i = _.findIndex(this._data, query);
-    return i < 0 ? null : this._data[i];
+    let id = query.replace(' ', '_');
+    return this._data[id] || null;
   }
 
   /**
@@ -55,10 +56,10 @@ export default class oneDB {
   delete (query) {
     log('delete', query);
 
-    this._save();
+    this.save();
   }
 
-  _save (force) {
+  save (force) {
     if (!force) {
       var _this = this;
       clearInterval(this.autoSaveTimeout);
@@ -73,10 +74,10 @@ export default class oneDB {
 
   forceSave () {
     log('forceSave');
-    this._save(true);
+    this.save(true);
   }
 
-  static readJsonFile (path, defaultData = []) {
+  static readJsonFile (path, defaultData) {
     log(`readJsonFile ${path}`);
 
     if (!fs.existsSync(path)) {
