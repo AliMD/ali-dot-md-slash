@@ -15,8 +15,7 @@ log = debug('ali-dot-md-slash:server'),
 config = {
   host: process.env.alimd_host || '0.0.0.0',
   port: process.env.alimd_port || '8080',
-  googleApiKey: process.env.googleApiKey,
-  not_found: process.env.alimd_notfound || '/404'
+  not_found: process.env.alimd_notfound || '/404/'
 },
 
 main = () => {
