@@ -21,7 +21,8 @@ export default class oneDB {
    */
   open (dbPath = this.dbPath) {
     log(`open: ${dbPath}`);
-    this._data = oneDB.readJsonFile(dbPath);
+    let fileData = oneDB.readJsonFile(dbPath, {data: {}});
+    this._data = fileData.data;
   }
 
   /**
@@ -38,8 +39,8 @@ export default class oneDB {
    */
   query (query) {
     log('query', query);
-    let i = _.findIndex(this._data, query);
-    return i < 0 ? null : this._data[i];
+    let id = query.replace(' ', '_');
+    return this._data[id] || null;
   }
 
   /**
@@ -76,7 +77,7 @@ export default class oneDB {
     this.save(true);
   }
 
-  static readJsonFile (path, defaultData = []) {
+  static readJsonFile (path, defaultData) {
     log(`readJsonFile ${path}`);
 
     if (!fs.existsSync(path)) {

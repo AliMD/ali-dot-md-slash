@@ -1,6 +1,5 @@
-[
-  {
-    "short": "ali",
-    "url": "http://ali.md/"
+{
+  "data": {
+    "ali": "http://ali.md/"
   }
-]
+}

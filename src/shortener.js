@@ -24,6 +24,6 @@ export function find (url) {
   log(`find url`);
   url = cleanUrl(url);
   let item = db.query(url);
+  if (typeof item === 'string') item = {url: item};
   return item || false
 }
-
