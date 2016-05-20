@@ -3,6 +3,7 @@
  */
 
 import fs from 'fs';
+import _ from 'lodash';
 import debug from 'debug';
 const log = debug('1db');
 
@@ -18,48 +19,46 @@ export default class oneDB {
   /**
    * Open json file
    */
-  async _open (dbPath = this.dbPath) {
-    log(`open: ${path}`);
-    this._data = await oneDB.readJsonFile(dbPath);
+  _open (dbPath = this.dbPath) {
+    log(`open: ${dbPath}`);
+    this._data = oneDB.readJsonFile(dbPath);
   }
 
   /**
    * Inser new item
    */
-  async insert (obj) {
+  insert (obj) {
     log('insert');
 
-    this.save();
+    this._save();
   }
 
   /**
    * get single item base on query
    */
-  async query (query) {
+  query (query) {
     log('query', query);
-
-    this.save();
+    let i = _.findIndex(this._data, query);
+    return i < 0 ? null : this._data[i];
   }
 
   /**
    * get array of items base in query
    */
-  async queryAll (query) {
+  queryAll (query) {
     log('queryAll', query);
-
-    this.save();
   }
 
   /**
    * delete items base in query
    */
-  async delete (query) {
+  delete (query) {
     log('delete', query);
 
-    this.save();
+    this._save();
   }
 
-  async _save (force) {
+  _save (force) {
     if (!force) {
       var _this = this;
       clearInterval(this.autoSaveTimeout);
@@ -72,16 +71,16 @@ export default class oneDB {
     }
   }
 
-  async forceSave () {
+  forceSave () {
     log('forceSave');
     this._save(true);
   }
 
-  static async readJsonFile (path, defaultData = []) {
+  static readJsonFile (path, defaultData = []) {
     log(`readJsonFile ${path}`);
 
     if (!fs.existsSync(path)) {
-      writeJsonFile(file, defaultData);
+      oneDB.writeJsonFile(path, defaultData);
       return defaultData;
     }
 
@@ -94,7 +93,7 @@ export default class oneDB {
     return data;
   }
 
-  static async writeJsonFile(path, data) {
+  static writeJsonFile(path, data) {
     log(`writeJsonFile ${path}`);
     let json = JSON.stringify(data, null, 2);
     log(`${json.length} characters and ${data.length} item saved`);
