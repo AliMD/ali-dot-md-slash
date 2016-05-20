@@ -22,7 +22,7 @@
         "alimd_host": "0.0.0.0",
         "alimd_port": "8080",
         "alimd_notfound": "/404",
-        "googleApiKey": "AbCdEfGhIg123AbCdEfGhIg123AbCdEfGhIg123",
+        "alimd_googleApiKey": "AbCdEfGhIg123AbCdEfGhIg123AbCdEfGhIg123",
         "DEBUG": "1db,ali-dot-md-slash:*"
       },
       "env_production": {
