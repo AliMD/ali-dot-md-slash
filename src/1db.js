@@ -30,7 +30,7 @@ export default class oneDB {
   insert (obj) {
     log('insert');
 
-    this._save();
+    this.save();
   }
 
   /**
@@ -55,10 +55,10 @@ export default class oneDB {
   delete (query) {
     log('delete', query);
 
-    this._save();
+    this.save();
   }
 
-  _save (force) {
+  save (force) {
     if (!force) {
       var _this = this;
       clearInterval(this.autoSaveTimeout);
@@ -73,7 +73,7 @@ export default class oneDB {
 
   forceSave () {
     log('forceSave');
-    this._save(true);
+    this.save(true);
   }
 
   static readJsonFile (path, defaultData = []) {
