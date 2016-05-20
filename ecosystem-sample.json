@@ -19,10 +19,11 @@
       "exec_interpreter": "babel-node",
 
       "env": {
-        "host": "0.0.0.0",
-        "port": "8080",
+        "alimd_host": "0.0.0.0",
+        "alimd_port": "8080",
+        "alimd_notfound": "/404",
         "googleApiKey": "AbCdEfGhIg123AbCdEfGhIg123AbCdEfGhIg123",
-        "DEBUG": "ali-dot-md-slash:*"
+        "DEBUG": "1db,ali-dot-md-slash:*"
       },
       "env_production": {
         "NODE_ENV": "production"
