@@ -1,0 +1,32 @@
+{
+  /**
+   * Application configuration section
+   * http://pm2.keymetrics.io/docs/usage/application-declaration/
+   */
+  "apps": [{
+      "name":   "MetroFrqBot",
+      "script": "index.js",
+      "args":   [],
+
+      "out_file":   "out.log",
+      "error_file": "err.log",
+      "merge_logs": true,
+
+      "autorestart": true,
+      "max_restarts": 2,
+      "max_memory_restart": "50M",
+      "post_update": ["npm install"],
+      "exec_interpreter": "babel-node",
+
+      "env": {
+        "alimd_host": "0.0.0.0",
+        "alimd_port": "8080",
+        "alimd_notfound": "/404",
+        "alimd_googleApiKey": "AbCdEfGhIg123AbCdEfGhIg123AbCdEfGhIg123",
+        "DEBUG": "1db,ali-dot-md-slash:*"
+      },
+      "env_production": {
+        "NODE_ENV": "production"
+      }
+    }]
+}

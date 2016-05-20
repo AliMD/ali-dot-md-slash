@@ -1,11 +1,20 @@
 {
   "name": "ali-dot-md-slash",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Ali.MD Url Shortener Node Service",
   "main": "src/index.js",
   "scripts": {
+    "start": "pm2 start ecosystem.json --name='ali-dot-md-slash'",
+    "restart": "pm2 restart ali-dot-md-slash",
+    "stop": "pm2 stop ali-dot-md-slash",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ali Mihandoost <i@ali.md> (http://ali.md/)",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "babel-preset-es2015-loose": "^7.0.0",
+    "babel-preset-stage-3": "^6.5.0",
+    "debug": "^2.2.0",
+    "lodash": "^4.12.0"
+  }
 }
