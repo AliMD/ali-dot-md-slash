@@ -4,17 +4,18 @@
  */
 
 import http from 'http';
-import URL from 'url';
 import debug from 'debug';
+import * as shortener from './shortener.js';
 
 const
 
-log = debug('ali-dot-md-slash:index'),
+log = debug('ali-dot-md-slash:server'),
 
 config = {
-  host: process.env.host || '0.0.0.0',
-  port: process.env.port || '8080',
-  googleApiKey: process.env.googleApiKey
+  host: process.env.alimd_host || '0.0.0.0',
+  port: process.env.alimd_port || '8080',
+  googleApiKey: process.env.googleApiKey,
+  not_found: process.env.alimd_notfound || '/404'
 },
 
 main = () => {
@@ -32,15 +33,18 @@ makeServer = () => {
 
 serverListener = (req, res) => {
   log(`New request: ${req.url}`);
-  let path = parseUrl(req.url);
-  res.end(JSON.stringify({url: req.url, path: path}, null, 2));
-},
 
-parseUrl = (url) => {
-  let path = URL.parse(url).pathname.toLowerCase().trim();
-  if (path.indexOf('/') === 0) path = path.substr(1);
-  if (path.lastIndexOf('/') === path.length-1) path = path.substr(0, path.length-1);
-  return path;
+  if (req.url === config.not_found) {
+    res.writeHead(404, {'Content-Type': 'text/plain'});
+    res.end('Not Found !');
+    return;
+  }
+
+  let expanded = shortener.find(req.url) || {url: config.not_found};
+  res.writeHead(expanded.mode === 'permanently' ? 301 : 302, {
+    Location: expanded.url
+  });
+  res.end();
 }
 
 ;main();
