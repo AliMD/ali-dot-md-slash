@@ -4,9 +4,9 @@
   "description": "Ali.MD Url Shortener Node Service",
   "main": "src/index.js",
   "scripts": {
-    "start": "pm2 delete ali-dot-md-slash && pm2 start ecosystem.json --name='ali-dot-md-slash'",
-    "restart": "pm2 restart ali-dot-md-slash",
-    "stop": "pm2 stop ali-dot-md-slash",
+    "start": "pm2 start ecosystem.json --name='go.ali.md'",
+    "stop": "pm2 delete go.ali.md",
+    "restart": "npm run stop && npm start",
     "watch": "npm start -- --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
