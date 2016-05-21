@@ -4,7 +4,7 @@
    * http://pm2.keymetrics.io/docs/usage/application-declaration/
    */
   "apps": [{
-      "name":   "ali-dot-md-slash",
+      "name":   "go.ali.md",
       "script": "src/index.js",
       "args":   [],
 
