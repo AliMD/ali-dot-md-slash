@@ -10,6 +10,7 @@ import filedb from './1db.js';
 const db = new filedb('urls.json');
 
 export function cleanUrl (path) {
+  if (!path) return '';
   path = path.toLowerCase().trim();
   if (path.indexOf('/') === 0) path = path.substr(1);
   if (path.lastIndexOf('/') === path.length-1) path = path.substr(0, path.length-1);
@@ -29,5 +30,7 @@ export function find (url) {
 export function addurl(short, url) {
   log(`addurl ${short} => ${url}`);
   short = cleanUrl(short);
+  if (!short.length || !url.length) return false;
   db.insert(short, url);
+  return true;
 }
