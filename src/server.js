@@ -8,7 +8,7 @@ import debug from 'debug';
 import URL from 'url';
 
 import * as shortener from './shortener.js';
-import getEnv from './1utill.js'
+import {getEnv} from './1utill.js'
 
 const
 
