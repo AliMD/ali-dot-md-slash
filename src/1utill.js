@@ -1,3 +1,12 @@
+import debug from 'debug';
+const log = debug('1utill');
+
+
+import path from 'path';
+import fs from 'fs';
+
+const _0777 = parseInt('0777', 8);
+
 export function getEnv (name) {
   log(`getEnv: ${name}`);
   if (!name) {
@@ -12,4 +21,20 @@ export function getEnv (name) {
     });
   }
   return env;
+}
+
+export function mkdirSync(path, mode = _0777) {
+  path = path.resolve(path);
+  try {
+    return fs.mkdirSync(path, mode);
+  }
+  catch (err) {
+    if (err.code === 'ENOENT') {
+      mkdirSync(path.dirname(path), mode);
+      return mkdirSync(path, mode);
+    }
+
+    if (!fs.statSync(path).isDirectory()) throw err;
+    return true;
+  }
 }
