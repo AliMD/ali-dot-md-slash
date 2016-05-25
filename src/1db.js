@@ -3,14 +3,16 @@
  */
 
 import fs from 'fs';
+import path from 'path';
 import _ from 'lodash';
+import {mkdirSync} from './1utill.js';
 import debug from 'debug';
 const log = debug('1db');
 
 export default class oneDB {
   constructor (dbPath = './db.json') {
     log('init');
-    this.dbPath = dbPath;
+    this.dbPath = path.resolve(dbPath);
     this.saveDelay = 5000;
     this.data = [];
     this.open();
@@ -77,16 +79,17 @@ export default class oneDB {
     this.save(true);
   }
 
-  static readJsonFile (path, defaultData) {
-    log(`readJsonFile ${path}`);
+  static readJsonFile (dbPath, defaultData) {
+    log(`readJsonFile ${dbPath}`);
 
-    if (!fs.existsSync(path)) {
-      oneDB.writeJsonFile(path, defaultData);
+    if (!fs.existsSync(dbPath)) {
+      mkdirSync(path.dirname(dbPath));
+      oneDB.writeJsonFile(dbPath, defaultData);
       return defaultData;
     }
 
     let
-    fileContent = fs.readFileSync(path),
+    fileContent = fs.readFileSync(dbPath),
     data = JSON.parse(fileContent)
     ;
 
@@ -94,11 +97,11 @@ export default class oneDB {
     return data;
   }
 
-  static writeJsonFile(path, data) {
-    log(`writeJsonFile ${path}`);
+  static writeJsonFile(dbPath, data) {
+    log(`writeJsonFile ${dbPath}`);
     let json = JSON.stringify(data, null, 2);
     log(`${json.length} characters saved`);
-    return fs.writeFileSync(path, json);
+    return fs.writeFileSync(dbPath, json);
   }
 
 }

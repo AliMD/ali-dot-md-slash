@@ -1,8 +1,7 @@
 import debug from 'debug';
 const log = debug('1utill');
 
-
-import path from 'path';
+import xpath from 'path';
 import fs from 'fs';
 
 const _0777 = parseInt('0777', 8);
@@ -24,13 +23,13 @@ export function getEnv (name) {
 }
 
 export function mkdirSync(path, mode = _0777) {
-  path = path.resolve(path);
+  path = xpath.resolve(path);
   try {
     return fs.mkdirSync(path, mode);
   }
   catch (err) {
     if (err.code === 'ENOENT') {
-      mkdirSync(path.dirname(path), mode);
+      mkdirSync(xpath.dirname(path), mode);
       return mkdirSync(path, mode);
     }
 
