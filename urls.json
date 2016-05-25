@@ -2,6 +2,11 @@
   "data": {
     "git": "https://github.com/AliMD",
     "mdn": "https://developer.mozilla.org/en-US/profiles/alimd",
-    "/": "http://ali.md/i"
+    "/": "http://ali.md/i",
+    "tuts/git": "http://www.atlassian.com/git/tutorials/",
+    "tuts/es6": "https://babeljs.io/docs/learn-es2015/",
+    "tmp": "https://id.heroku.com/account/accept/3798568/a6b56702e858cf4778bce90940602205",
+    "spaces": "https://goo.gl/spaces/kroGB46ZyBzkAzbY7",
+    "space": "/spaces"
   }
 }
