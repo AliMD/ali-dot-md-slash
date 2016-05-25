@@ -1,5 +1,5 @@
 /**
- * ali-dot-md-slash url shortner
+ * alimd website and url shortner
  * http://ali.md/git
  */
 
@@ -10,7 +10,7 @@ import URL from 'url';
 
 const
 
-log = debug('ali-dot-md-slash:server'),
+log = debug('alimd:server'),
 
 config = {
   host: process.env.alimd_host || '0.0.0.0',
@@ -68,7 +68,7 @@ page404 = (req, res) => {
   });
   res.write(`<!DOCTYPE html><html><body>
   <h1 style="text-align: center; margin-top: 1em; font-size: 7em;">404</h1>
-  <p style="text-align: center; margin-top: 1.5em; font-size: 1.2em;">If you want to add this just tell me <a href="https://github.com/AliMD/ali-dot-md-slash/issues/new">here</a></p>
+  <p style="text-align: center; margin-top: 1.5em; font-size: 1.2em;">If you want to add this just tell me <a href="https://github.com/AliMD/alimd/issues/new">here</a></p>
   </body></html>`);
 },
 
