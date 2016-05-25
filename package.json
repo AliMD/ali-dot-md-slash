@@ -4,7 +4,7 @@
   "description": "Ali.MD Url Shortener Node Service",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "n use 6.2 index.js",
     "pm2-start": "pm2 start ecosystem.json && pm2 logs ali-dot-md-slash",
     "pm2-stop": "pm2 delete ali-dot-md-slash",
     "pm2-watch": "npm start -- --watch",
