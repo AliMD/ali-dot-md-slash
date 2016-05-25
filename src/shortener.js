@@ -6,8 +6,11 @@
 import debug from 'debug';
 const log = debug('alimd:shortener');
 
+import getEnv from './1utill.js'
+const dbPath = getEnv('AliMD_HOME') || process.env.HOME + '/ali.md.db';
+
 import filedb from './1db.js';
-const db = new filedb('urls.json');
+const db = new filedb(`${dbPath}/urls.json`);
 
 export function cleanUrl (path) {
   if (!path) return '';
