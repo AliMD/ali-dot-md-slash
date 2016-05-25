@@ -4,7 +4,7 @@
  */
 
 import debug from 'debug';
-const log = debug('ali-dot-md-slash:shortener');
+const log = debug('alimd:shortener');
 
 import filedb from './1db.js';
 const db = new filedb('urls.json');
