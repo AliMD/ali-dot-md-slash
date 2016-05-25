@@ -5,28 +5,14 @@
 
 import http from 'http';
 import debug from 'debug';
-import * as shortener from './shortener.js';
 import URL from 'url';
+
+import * as shortener from './shortener.js';
+import getEnv from './1utill.js'
 
 const
 
 log = debug('alimd:server'),
-
-getEnv = (name) => {
-  log(`getEnv: ${name}`);
-  if (!name) {
-    log('getEnv: env name is empty !');
-    return '';
-  }
-
-  let env = process.env[name];
-  if (typeof env === 'string') {
-    env = env.replace(/\$([^/$]+)/g, (_, n) => {
-      return process.env[n] || ('$'+n);
-    });
-  }
-  return env;
-},
 
 config = {
   host: getEnv('AliMD_HOST') || '0.0.0.0',
