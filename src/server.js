@@ -42,21 +42,24 @@ makeServer = () => {
 serverListener = (req, res) => {
   log(`New request: ${req.url}`);
 
+  req.url = URL.parse(req.url, true);
+
   let postData = '';
   if (req.method == 'POST') {
     req.on('data', (data) => {
       postData += data;
-    })
+    });
+    req.on('end', () => {
+      req.url.post = querystring.parse(postData);
+      roating(req, res);
+    });
   }
 
-  req.on('end', () => {
-    req.url = URL.parse(req.url, true);
-    req.url.post = querystring.parse(postData);
-
+  else {
+    req.url.post = {};
     roating(req, res);
+  }
 
-    log('end ;)');
-  });
 },
 
 roating = (req, res) => {
@@ -103,7 +106,7 @@ addurl = (req, res) => {
     if (req.url.post.pass && !req.url.query.msg) req.url.query.msg = 'Wrong pass.';
     res.write(`<!DOCTYPE html><html><body>
     <form action="${config.addurl}" method="post">
-      <h2>${req.url.query.msg}</h2>
+      <h2>${req.url.query.msg || 'Add new url'}</h2>
       <input type="text" name="short" value="${req.url.post.short || ''}" placeholder="short" />
       <input type="text" name="url" value="${req.url.post.url || ''}" placeholder="url" />
       <input type="password" name="pass" value="" placeholder="password" />
@@ -124,7 +127,7 @@ addurl = (req, res) => {
   }
 
   else {
-    redirectTo(`${config.addurl}?msg=Please+fill+all+fields+and+try+again.`);
+    redirectTo(`${config.addurl}?msg=Please+fill+all+fields+and+try+again.`, req, res);
   }
 },
 
