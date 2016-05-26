@@ -100,8 +100,10 @@ addurl = (req, res) => {
   });
 
   if(req.url.post.pass !== config.adminPass) {
+    if (req.url.post.pass && !req.url.query.msg) req.url.query.msg = 'Wrong pass.';
     res.write(`<!DOCTYPE html><html><body>
-    <form action="${config.addurl}" target="_blank" method="post">
+    <form action="${config.addurl}" method="post">
+      <h2>${req.url.query.msg}</h2>
       <input type="text" name="short" value="${req.url.post.short || ''}" placeholder="short" />
       <input type="text" name="url" value="${req.url.post.url || ''}" placeholder="url" />
       <input type="password" name="pass" value="" placeholder="password" />
@@ -115,12 +117,14 @@ addurl = (req, res) => {
     <p style="text-align: center; margin-top: 1em; font-size: 1.2em;">
       Success.<br/>
       <a href="/${req.url.post.short}">ali.md/${req.url.post.short}</a> =&gt; ${req.url.post.url}
+      <br/>
+      <a href="${config.addurl}>Add another</a>
     </p>
     </body></html>`);
   }
 
   else {
-    redirectTo(config.addurl);
+    redirectTo(`${config.addurl}?msg=Please+fill+all+fields+and+try+again.`);
   }
 },
 
