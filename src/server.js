@@ -17,7 +17,7 @@ log = debug('alimd:server'),
 config = {
   host: getEnv('AliMD_HOST') || '0.0.0.0',
   port: getEnv('AliMD_PORT') || '8080',
-  not_found: getEnv('AliMD_NOTFOUND') || '/404/',
+  notFound: getEnv('AliMD_NOTFOUND') || '/404/',
   addurl: getEnv('AliMD_ADDURL') || '/addurl',
   adminPass: getEnv('AliMD_ADMIN_PASS') || 'pass',
   userNewRequestUrl: getEnv('AliMD_USER_NEW_REQUEST_URL') || 'https://github.com/AliMD/alimd/issues/new'
@@ -54,7 +54,7 @@ checkInternalRouters = (req, res) => {
   log('checkInternalRouters');
   let ret = true;
   switch (req.url.pathname) {
-    case config.not_found:
+    case config.notFound:
       page404(req, res);
       break;
 
@@ -112,7 +112,7 @@ addurl = (req, res) => {
 },
 
 redirect = (req, res) => {
-  let expanded = shortener.find(req.url.pathname) || {url: config.not_found};
+  let expanded = shortener.find(req.url.pathname) || {url: config.notFound};
   log(`redirect to ${expanded.url}`);
   redirectTo(expanded.url, req, res, expanded.mode === 'permanently' ? 301 : 302);
 },
