@@ -33,7 +33,7 @@ makeServer = () => {
   .createServer(serverListener)
   .listen(config.port, config.host)
   ;
-  log(`Server start on http://${config.host}:${config.port}/`);
+  console.log(`Server start on http://${config.host}:${config.port}/`);
 },
 
 serverListener = (req, res) => {

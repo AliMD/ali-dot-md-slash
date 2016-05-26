@@ -15,14 +15,14 @@
       "autorestart": false,
       "max_restarts": 2,
       "ignore_watch": "urls.json",
-      "max_memory_restart": "50M",
+      "max_memory_restart": "60M",
       "post_update": ["npm install"],
-      "exec_interpreter": "n use 6.2.0",
+      "exec_interpreter": "babel-node",
 
       "env": {
         "AliMD_HOST": "0.0.0.0",
-        "AliMD_PORT": "8081",
-        "DEBUG": "1db,alimd:*"
+        "AliMD_PORT": "8080",
+        "DEBUG": "1db,1utill,alimd:*"
       },
       "env_production": {
         "NODE_ENV": "production"

@@ -22,7 +22,8 @@ export function getEnv (name) {
   return env;
 }
 
-export function mkdirSync(path, mode = _0777) {
+export function mkdirSync (path, mode = _0777) {
+  log(`mkdirSync: ${path}`);
   path = xpath.resolve(path);
   try {
     return fs.mkdirSync(path, mode);
