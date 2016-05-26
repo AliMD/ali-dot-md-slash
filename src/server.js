@@ -83,7 +83,7 @@ addurl = (req, res) => {
     'Content-Type': 'text/html'
   });
 
-  if (shortener.addurl(req.url.query.short || '', req.url.query.url || '')) {
+  if (req.url.query.short && req.url.query.short.length && shortener.addurl(req.url.query.short || '', req.url.query.url || '')) {
     res.write(`<!DOCTYPE html><html><body>
     <p style="text-align: center; margin-top: 1em; font-size: 1.2em;">
       Success.<br/>
