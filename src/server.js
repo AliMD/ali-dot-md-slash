@@ -19,7 +19,9 @@ config = {
   port: getEnv('AliMD_PORT') || '8080',
   not_found: getEnv('AliMD_NOTFOUND') || '/404/',
   addurl: getEnv('AliMD_ADDURL') || '/addurl',
-  userNewRequestUrl: getEnv('AliMD_USER_NEW_REQUEST_URL') || 'https://github.com/AliMD/alimd/issues/new'
+  userNewRequestUrl: getEnv('AliMD_USER_NEW_REQUEST_URL') || 'https://github.com/AliMD/alimd/issues/new',
+  adminPass: getEnv('AliMD_ADMIN_PASS') || 'pass',
+
 },
 
 main = () => {
@@ -93,8 +95,9 @@ addurl = (req, res) => {
   } else {
     res.write(`<!DOCTYPE html><html><body>
     <form action="${config.addurl}" target="_blank">
-      <input type="text" name="short" value="" />
-      <input type="text" name="url" value="http://" />
+      <input type="text" name="short" value="" placeholder="short" />
+      <input type="text" name="url" value="" placeholder="url" />
+      <input type="password" name="pass" value="" placeholder="password" />
       <input type="submit" value="Send" />
     </form>
     </body></html>`);
