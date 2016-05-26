@@ -92,7 +92,7 @@ addurl = (req, res) => {
     </body></html>`);
   } else {
     res.write(`<!DOCTYPE html><html><body>
-    <form action="http://go.ali.md${config.addurl}" target="_blank">
+    <form action="${config.addurl}" target="_blank">
       <input type="text" name="short" value="" />
       <input type="text" name="url" value="http://" />
       <input type="submit" value="Send" />
