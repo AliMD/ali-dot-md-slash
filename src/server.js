@@ -19,9 +19,8 @@ config = {
   port: getEnv('AliMD_PORT') || '8080',
   not_found: getEnv('AliMD_NOTFOUND') || '/404/',
   addurl: getEnv('AliMD_ADDURL') || '/addurl',
-  userNewRequestUrl: getEnv('AliMD_USER_NEW_REQUEST_URL') || 'https://github.com/AliMD/alimd/issues/new',
   adminPass: getEnv('AliMD_ADMIN_PASS') || 'pass',
-
+  userNewRequestUrl: getEnv('AliMD_USER_NEW_REQUEST_URL') || 'https://github.com/AliMD/alimd/issues/new'
 },
 
 main = () => {
@@ -85,30 +84,40 @@ addurl = (req, res) => {
     'Content-Type': 'text/html'
   });
 
-  if (req.url.query.short && req.url.query.short.length && shortener.addurl(req.url.query.short || '', req.url.query.url || '')) {
+  if(req.url.query.pass !== config.adminPass) {
+    res.write(`<!DOCTYPE html><html><body>
+    <form action="${config.addurl}" target="_blank" method="post">
+      <input type="text" name="short" value="${req.url.query.short}" placeholder="short" />
+      <input type="text" name="url" value="${req.url.query.url}" placeholder="url" />
+      <input type="password" name="pass" value="" placeholder="password" />
+      <input type="submit" value="Send" />
+    </form>
+    </body></html>`);
+  }
+
+  else if (shortener.addurl(req.url.query.short || '', req.url.query.url || '')) {
     res.write(`<!DOCTYPE html><html><body>
     <p style="text-align: center; margin-top: 1em; font-size: 1.2em;">
       Success.<br/>
       <a href="/${req.url.query.short}">ali.md/${req.url.query.short}</a> =&gt; ${req.url.query.url}
     </p>
     </body></html>`);
-  } else {
-    res.write(`<!DOCTYPE html><html><body>
-    <form action="${config.addurl}" target="_blank">
-      <input type="text" name="short" value="" placeholder="short" />
-      <input type="text" name="url" value="" placeholder="url" />
-      <input type="password" name="pass" value="" placeholder="password" />
-      <input type="submit" value="Send" />
-    </form>
-    </body></html>`);
+  }
+
+  else {
+    redirectTo(config.addurl);
   }
 },
 
 redirect = (req, res) => {
   let expanded = shortener.find(req.url.pathname) || {url: config.not_found};
   log(`redirect to ${expanded.url}`);
-  res.writeHead(expanded.mode === 'permanently' ? 301 : 302, {
-    Location: expanded.url
+  redirectTo(expanded.url, req, res, expanded.mode === 'permanently' ? 301 : 302);
+}
+
+redirectTo = (url, req, res, mode = 302) => {
+  res.writeHead(mode, {
+    Location: url
   });
 }
 
