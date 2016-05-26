@@ -102,8 +102,8 @@ addurl = (req, res) => {
 },
 
 redirect = (req, res) => {
-  log('redirect');
   let expanded = shortener.find(req.url.pathname) || {url: config.not_found};
+  log(`redirect to ${expanded.url}`);
   res.writeHead(expanded.mode === 'permanently' ? 301 : 302, {
     Location: expanded.url
   });
