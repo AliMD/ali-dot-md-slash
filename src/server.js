@@ -6,6 +6,8 @@
 import http from 'http';
 import debug from 'debug';
 import URL from 'url';
+import querystring from 'querystring';
+
 
 import * as shortener from './shortener.js';
 import {getEnv} from './1utill.js'
@@ -39,20 +41,27 @@ makeServer = () => {
 
 serverListener = (req, res) => {
   log(`New request: ${req.url}`);
-  req.url = URL.parse(req.url, true);
 
-  log(req.url);
-
-  if (!checkInternalRouters(req, res)) {
-    redirect(req, res);
+  let postData = '';
+  if (req.method == 'POST') {
+    req.on('data', (data) => {
+      postData += data;
+    })
   }
 
-  res.end();
+  req.on('end', () => {
+    req.url = URL.parse(req.url, true);
+    req.url.post = querystring.parse(postData);
+
+    roating(req, res);
+
+    log('end ;)');
+  });
 },
 
-checkInternalRouters = (req, res) => {
-  log('checkInternalRouters');
-  let ret = true;
+roating = (req, res) => {
+  log('roating');
+
   switch (req.url.pathname) {
     case config.notFound:
       page404(req, res);
@@ -63,9 +72,10 @@ checkInternalRouters = (req, res) => {
       break;
 
     default:
-      ret = false;
+      redirect(req, res)
   }
-  return ret;
+
+  res.end();
 },
 
 page404 = (req, res) => {
@@ -81,27 +91,30 @@ page404 = (req, res) => {
 
 addurl = (req, res) => {
   log('addurl');
+
   log(req.url.query);
+  log(req.url.post);
+
   res.writeHead(200, {
     'Content-Type': 'text/html'
   });
 
-  if(req.url.query.pass !== config.adminPass) {
+  if(req.url.post.pass !== config.adminPass) {
     res.write(`<!DOCTYPE html><html><body>
     <form action="${config.addurl}" target="_blank" method="post">
-      <input type="text" name="short" value="${req.url.query.short}" placeholder="short" />
-      <input type="text" name="url" value="${req.url.query.url}" placeholder="url" />
+      <input type="text" name="short" value="${req.url.post.short || ''}" placeholder="short" />
+      <input type="text" name="url" value="${req.url.post.url || ''}" placeholder="url" />
       <input type="password" name="pass" value="" placeholder="password" />
       <input type="submit" value="Send" />
     </form>
     </body></html>`);
   }
 
-  else if (shortener.addurl(req.url.query.short || '', req.url.query.url || '')) {
+  else if (shortener.addurl(req.url.post.short || '', req.url.post.url || '')) {
     res.write(`<!DOCTYPE html><html><body>
     <p style="text-align: center; margin-top: 1em; font-size: 1.2em;">
       Success.<br/>
-      <a href="/${req.url.query.short}">ali.md/${req.url.query.short}</a> =&gt; ${req.url.query.url}
+      <a href="/${req.url.post.short}">ali.md/${req.url.post.short}</a> =&gt; ${req.url.post.url}
     </p>
     </body></html>`);
   }
