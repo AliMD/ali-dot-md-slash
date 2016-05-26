@@ -121,7 +121,7 @@ addurl = (req, res) => {
       Success.<br/>
       <a href="/${req.url.post.short}">ali.md/${req.url.post.short}</a> =&gt; ${req.url.post.url}
       <br/>
-      <a href="${config.addurl}>Add another</a>
+      <a href="${config.addurl}">Add another</a>
     </p>
     </body></html>`);
   }
