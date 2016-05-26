@@ -1,13 +1,12 @@
 {
   "name": "ali.md",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "Ali.MD Url Shortener Node Service",
   "main": "index.js",
   "scripts": {
     "start": "babel-node index.js",
     "pm2-start": "pm2 start ecosystem.json && pm2 logs alimd",
     "pm2-stop": "pm2 delete alimd",
-    "pm2-watch": "pm2 start ecosystem.json --watch && pm2 logs alimd",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ali Mihandoost <i@ali.md> (http://ali.md/)",

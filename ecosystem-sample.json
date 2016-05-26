@@ -14,7 +14,6 @@
 
       "autorestart": true,
       "max_restarts": 2,
-      "ignore_watch": "urls.json",
       "max_memory_restart": "60M",
       "post_update": ["npm install"],
       "exec_interpreter": "babel-node",
@@ -22,6 +21,7 @@
       "env": {
         "AliMD_HOST": "0.0.0.0",
         "AliMD_PORT": "8080",
+        "AliMD_ADMIN_PASS": "yourpass",
         "DEBUG": "1db,1utill,alimd:*"
       },
       "env_production": {

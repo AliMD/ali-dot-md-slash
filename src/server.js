@@ -6,6 +6,8 @@
 import http from 'http';
 import debug from 'debug';
 import URL from 'url';
+import querystring from 'querystring';
+
 
 import * as shortener from './shortener.js';
 import {getEnv} from './1utill.js'
@@ -17,8 +19,9 @@ log = debug('alimd:server'),
 config = {
   host: getEnv('AliMD_HOST') || '0.0.0.0',
   port: getEnv('AliMD_PORT') || '8080',
-  not_found: getEnv('AliMD_NOTFOUND') || '/404/',
+  notFound: getEnv('AliMD_NOTFOUND') || '/404/',
   addurl: getEnv('AliMD_ADDURL') || '/addurl',
+  adminPass: getEnv('AliMD_ADMIN_PASS') || 'pass',
   userNewRequestUrl: getEnv('AliMD_USER_NEW_REQUEST_URL') || 'https://github.com/AliMD/alimd/issues/new'
 },
 
@@ -38,20 +41,32 @@ makeServer = () => {
 
 serverListener = (req, res) => {
   log(`New request: ${req.url}`);
+
   req.url = URL.parse(req.url, true);
 
-  if (!checkInternalRouters(req, res)) {
-    redirect(req, res);
+  let postData = '';
+  if (req.method == 'POST') {
+    req.on('data', (data) => {
+      postData += data;
+    });
+    req.on('end', () => {
+      req.url.post = querystring.parse(postData);
+      roating(req, res);
+    });
   }
 
-  res.end();
+  else {
+    req.url.post = {};
+    roating(req, res);
+  }
+
 },
 
-checkInternalRouters = (req, res) => {
-  log('checkInternalRouters');
-  let ret = true;
+roating = (req, res) => {
+  log('roating');
+
   switch (req.url.pathname) {
-    case config.not_found:
+    case config.notFound:
       page404(req, res);
       break;
 
@@ -60,9 +75,10 @@ checkInternalRouters = (req, res) => {
       break;
 
     default:
-      ret = false;
+      redirect(req, res)
   }
-  return ret;
+
+  res.end();
 },
 
 page404 = (req, res) => {
@@ -78,34 +94,52 @@ page404 = (req, res) => {
 
 addurl = (req, res) => {
   log('addurl');
+
   log(req.url.query);
+  log(req.url.post);
+
   res.writeHead(200, {
     'Content-Type': 'text/html'
   });
 
-  if (shortener.addurl(req.url.query.short || '', req.url.query.url || '')) {
+  if(req.url.post.pass !== config.adminPass) {
+    if (req.url.post.pass && !req.url.query.msg) req.url.query.msg = 'Wrong pass.';
     res.write(`<!DOCTYPE html><html><body>
-    <p style="text-align: center; margin-top: 1em; font-size: 1.2em;">
-      Success.<br/>
-      <a href="/${req.url.query.short}">ali.md/${req.url.query.short}</a> =&gt; ${req.url.query.url}
-    </p>
-    </body></html>`);
-  } else {
-    res.write(`<!DOCTYPE html><html><body>
-    <form action="${config.addurl}" target="_blank">
-      <input type="text" name="short" value="" />
-      <input type="text" name="url" value="http://" />
+    <form action="${config.addurl}" method="post">
+      <h2>${req.url.query.msg || 'Add new url'}</h2>
+      <input type="text" name="short" value="${req.url.post.short || ''}" placeholder="short" />
+      <input type="text" name="url" value="${req.url.post.url || ''}" placeholder="url" />
+      <input type="password" name="pass" value="" placeholder="password" />
       <input type="submit" value="Send" />
     </form>
     </body></html>`);
   }
+
+  else if (shortener.addurl(req.url.post.short || '', req.url.post.url || '')) {
+    res.write(`<!DOCTYPE html><html><body>
+    <p style="text-align: center; margin-top: 1em; font-size: 1.2em;">
+      Success.<br/>
+      <a href="/${req.url.post.short}">ali.md/${req.url.post.short}</a> =&gt; ${req.url.post.url}
+      <br/>
+      <a href="${config.addurl}>Add another</a>
+    </p>
+    </body></html>`);
+  }
+
+  else {
+    redirectTo(`${config.addurl}?msg=Please+fill+all+fields+and+try+again.`, req, res);
+  }
 },
 
 redirect = (req, res) => {
-  log('redirect');
-  let expanded = shortener.find(req.url.pathname) || {url: config.not_found};
-  res.writeHead(expanded.mode === 'permanently' ? 301 : 302, {
-    Location: expanded.url
+  let expanded = shortener.find(req.url.pathname) || {url: config.notFound};
+  log(`redirect to ${expanded.url}`);
+  redirectTo(expanded.url, req, res, expanded.mode === 'permanently' ? 301 : 302);
+},
+
+redirectTo = (url, req, res, mode = 302) => {
+  res.writeHead(mode, {
+    Location: url
   });
 }
 
