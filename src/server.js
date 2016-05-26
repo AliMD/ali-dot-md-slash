@@ -1,26 +1,30 @@
 /**
- * ali-dot-md-slash url shortner
+ * alimd website and url shortner
  * http://ali.md/git
  */
 
 import http from 'http';
 import debug from 'debug';
-import * as shortener from './shortener.js';
 import URL from 'url';
+
+import * as shortener from './shortener.js';
+import {getEnv} from './1utill.js'
 
 const
 
-log = debug('ali-dot-md-slash:server'),
+log = debug('alimd:server'),
 
 config = {
-  host: process.env.alimd_host || '0.0.0.0',
-  port: process.env.alimd_port || '8080',
-  not_found: process.env.alimd_notfound || '/404/',
-  addurl: '/addurl'
+  host: getEnv('AliMD_HOST') || '0.0.0.0',
+  port: getEnv('AliMD_PORT') || '8080',
+  not_found: getEnv('AliMD_NOTFOUND') || '/404/',
+  addurl: getEnv('AliMD_ADDURL') || '/addurl',
+  userNewRequestUrl: getEnv('AliMD_USER_NEW_REQUEST_URL') || 'https://github.com/AliMD/alimd/issues/new'
 },
 
 main = () => {
   log('App start');
+  log(config);
   makeServer();
 },
 
@@ -29,7 +33,7 @@ makeServer = () => {
   .createServer(serverListener)
   .listen(config.port, config.host)
   ;
-  log(`Server start on http://${config.host}:${config.port}/`);
+  console.log(`Server start on http://${config.host}:${config.port}/`);
 },
 
 serverListener = (req, res) => {
@@ -68,7 +72,7 @@ page404 = (req, res) => {
   });
   res.write(`<!DOCTYPE html><html><body>
   <h1 style="text-align: center; margin-top: 1em; font-size: 7em;">404</h1>
-  <p style="text-align: center; margin-top: 1.5em; font-size: 1.2em;">If you want to add this just tell me <a href="https://github.com/AliMD/ali-dot-md-slash/issues/new">here</a></p>
+  <p style="text-align: center; margin-top: 1.5em; font-size: 1.2em;">If you want to add this just tell me <a href="${config.userNewRequestUrl}">here</a></p>
   </body></html>`);
 },
 

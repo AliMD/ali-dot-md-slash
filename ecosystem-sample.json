@@ -4,26 +4,25 @@
    * http://pm2.keymetrics.io/docs/usage/application-declaration/
    */
   "apps": [{
-      "name":   "go.ali.md",
-      "script": "src/index.js",
-      "args":   [],
+      "name": "alimd",
+      "script": "index.js",
+      "args": [],
 
-      "out_file":   "out.log",
+      "out_file": "out.log",
       "error_file": "err.log",
       "merge_logs": true,
 
-      "autorestart": true,
+      "autorestart": false,
       "max_restarts": 2,
       "ignore_watch": "urls.json",
-      "max_memory_restart": "50M",
+      "max_memory_restart": "60M",
       "post_update": ["npm install"],
       "exec_interpreter": "babel-node",
 
       "env": {
-        "alimd_host": "0.0.0.0",
-        "alimd_port": "8081",
-        "alimd_notfound": "/404/",
-        "DEBUG": "1db,ali-dot-md-slash:*"
+        "AliMD_HOST": "0.0.0.0",
+        "AliMD_PORT": "8080",
+        "DEBUG": "1db,1utill,alimd:*"
       },
       "env_production": {
         "NODE_ENV": "production"

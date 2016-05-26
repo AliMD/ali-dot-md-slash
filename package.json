@@ -1,22 +1,32 @@
 {
-  "name": "ali-dot-md-slash",
-  "version": "0.5.0",
+  "name": "ali.md",
+  "version": "0.6.0",
   "description": "Ali.MD Url Shortener Node Service",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
-    "start": "pm2 start ecosystem.json --name='go.ali.md'",
-    "stop": "pm2 delete go.ali.md",
-    "restart": "npm run stop && npm start",
-    "watch": "npm start -- --watch",
+    "start": "babel-node index.js",
+    "pm2-start": "pm2 start ecosystem.json && pm2 logs alimd",
+    "pm2-stop": "pm2 delete alimd",
+    "pm2-watch": "pm2 start ecosystem.json --watch && pm2 logs alimd",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ali Mihandoost <i@ali.md> (http://ali.md/)",
   "license": "MIT",
   "dependencies": {
+    "babel-cli": "^6.9.0",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-es2015-loose": "^7.0.0",
-    "babel-preset-stage-3": "^6.5.0",
+    "babel-preset-stage-2": "^6.5.0",
     "debug": "^2.2.0",
     "lodash": "^4.12.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AliMD/ali.md.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AliMD/ali.md/issues"
+  },
+  "homepage": "https://github.com/AliMD/ali.md#readme"
 }
