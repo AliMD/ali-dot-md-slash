@@ -12,7 +12,7 @@
       "error_file": "err.log",
       "merge_logs": true,
 
-      "autorestart": false,
+      "autorestart": true,
       "max_restarts": 2,
       "ignore_watch": "urls.json",
       "max_memory_restart": "60M",
