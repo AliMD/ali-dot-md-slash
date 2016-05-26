@@ -41,6 +41,8 @@ serverListener = (req, res) => {
   log(`New request: ${req.url}`);
   req.url = URL.parse(req.url, true);
 
+  log(req.url);
+
   if (!checkInternalRouters(req, res)) {
     redirect(req, res);
   }
@@ -113,7 +115,7 @@ redirect = (req, res) => {
   let expanded = shortener.find(req.url.pathname) || {url: config.not_found};
   log(`redirect to ${expanded.url}`);
   redirectTo(expanded.url, req, res, expanded.mode === 'permanently' ? 301 : 302);
-}
+},
 
 redirectTo = (url, req, res, mode = 302) => {
   res.writeHead(mode, {

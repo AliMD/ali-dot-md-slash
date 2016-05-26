@@ -14,7 +14,6 @@
 
       "autorestart": true,
       "max_restarts": 2,
-      "ignore_watch": "urls.json",
       "max_memory_restart": "60M",
       "post_update": ["npm install"],
       "exec_interpreter": "babel-node",
