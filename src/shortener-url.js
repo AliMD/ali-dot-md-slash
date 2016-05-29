@@ -4,7 +4,7 @@
  */
 
 import debug from 'debug';
-const log = debug('alimd:shortener');
+const log = debug('alimd:shortener:url');
 
 import {getEnv} from './1utill.js';
 const dbPath = getEnv('AliMD_HOME') || process.env.HOME + '/ali.md.db';
