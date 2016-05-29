@@ -4,17 +4,19 @@
 
 import fs from 'fs';
 import path from 'path';
-import _ from 'lodash';
+// import _ from 'lodash';
 import {mkdirSync} from './1utill.js';
 import debug from 'debug';
 const log = debug('1db');
+
+log('Class make');
 
 export default class oneDB {
   constructor (dbPath = './db.json') {
     log('init');
     this.dbPath = path.resolve(dbPath);
     this.saveDelay = 5000;
-    this.data = [];
+    this.data = {};
     this.open();
   }
 
