@@ -72,7 +72,7 @@ roating = (req, res) => {
       break;
 
     case config.addurl:
-      addurl(req, res);
+      addurlPage(req, res);
       break;
 
     default:
@@ -93,8 +93,8 @@ page404 = (req, res) => {
   </body></html>`);
 },
 
-addurl = (req, res) => {
-  log('addurl');
+addurlPage = (req, res) => {
+  log('addurlPage');
 
   log(req.url.query);
   log(req.url.post);
@@ -103,26 +103,42 @@ addurl = (req, res) => {
     'Content-Type': 'text/html'
   });
 
-  if(req.url.post.pass !== config.adminPass) {
+  if (req.url.post.pass !== config.adminPass) {
     if (req.url.post.pass && !req.url.query.msg) req.url.query.msg = 'Wrong pass.';
-    res.write(`<!DOCTYPE html><html><body>
+    res.write(`<!DOCTYPE html><html><head><style type="text/css">
+    input, select {
+      font-size: 1.2em;
+      display: block;
+      margin-top: 0.2em;
+      padding: 0.2em 0.3em;
+      box-sizing: border-box;
+    }
+    input[type="text"] {
+      width: 100%;
+    }
+    </style></head><body>
     <form action="${config.addurl}" method="post">
       <h2>${req.url.query.msg || 'Add new url'}</h2>
+      <select name="type">
+        <option value="string" selected="true">String URL</option>
+        <option value="regexp">ReqExp URL</option>
+      </select>
       <input type="text" name="short" value="${req.url.post.short || ''}" placeholder="short" />
       <input type="text" name="url" value="${req.url.post.url || ''}" placeholder="url" />
       <input type="password" name="pass" value="" placeholder="password" />
-      <input type="submit" value="Send" />
+      <input type="submit" value="Save ..." />
     </form>
     </body></html>`);
   }
 
-  else if (shortener.addurl(req.url.post.short || '', req.url.post.url || '')) {
+  else if (addurl(req.url.post.type, req.url.post.short, req.url.post.url)) {
+    let link = req.url.post.type === 'string' ?
+      `<a href="/${req.url.post.short}">ali.md/${req.url.post.short}</a> =&gt; ${req.url.post.url}`
+      : `${req.url.post.short} =&gt; ${req.url.post.url}`;
+
     res.write(`<!DOCTYPE html><html><body>
     <p style="text-align: center; margin-top: 1em; font-size: 1.2em;">
-      Success.<br/>
-      <a href="/${req.url.post.short}">ali.md/${req.url.post.short}</a> =&gt; ${req.url.post.url}
-      <br/>
-      <a href="${config.addurl}">Add another</a>
+      Success.<br/>${link}<br/><a href="${config.addurl}">Add another</a>
     </p>
     </body></html>`);
   }
@@ -132,8 +148,24 @@ addurl = (req, res) => {
   }
 },
 
+addurl = (type, short, url) => {
+  log('addurl');
+  if (!short || !url) return false;
+  if (type == 'string') {
+    urlShortener.addurl(short, url);
+    return true;
+  }
+  else if (type == 'regexp') {
+    regexpShortener.addurl(short, url);
+    return true;
+  }
+  else {
+    return false;
+  }
+},
+
 findPage = (req, res) => {
-  let url = urlShortener.find(req.url.pathname) || regexpShortener.find(req.url.pathname) || {url: config.notFound};
+  let expanded = urlShortener.find(req.url.pathname) || regexpShortener.find(req.url.pathname) || {url: config.notFound};
   log(`redirect to ${expanded.url}`);
   redirectTo(expanded.url, req, res, expanded.mode === 'permanently' ? 301 : 302);
 },
