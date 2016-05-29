@@ -9,7 +9,8 @@ import URL from 'url';
 import querystring from 'querystring';
 
 
-import * as shortener from './shortener.js';
+import * as urlShortener from './shortener-url.js';
+import * as regexpShortener from './shortener-regexp.js';
 import {getEnv} from './1utill.js'
 
 const
@@ -75,7 +76,7 @@ roating = (req, res) => {
       break;
 
     default:
-      redirect(req, res)
+      findPage(req, res)
   }
 
   res.end();
@@ -131,8 +132,8 @@ addurl = (req, res) => {
   }
 },
 
-redirect = (req, res) => {
-  let expanded = shortener.find(req.url.pathname) || {url: config.notFound};
+findPage = (req, res) => {
+  let url = urlShortener.find(req.url.pathname) || regexpShortener.find(req.url.pathname) || {url: config.notFound};
   log(`redirect to ${expanded.url}`);
   redirectTo(expanded.url, req, res, expanded.mode === 'permanently' ? 301 : 302);
 },
