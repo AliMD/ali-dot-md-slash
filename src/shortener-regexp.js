@@ -13,7 +13,7 @@ log = debug('alimd:shortener:regexp'),
 
 dbPath = getEnv('AliMD_HOME') || process.env.HOME + '/ali.md.db',
 
-db = new filedb(`${dbPath}/regexp.json`),
+db = new filedb(`${dbPath}/regexp.json`)
 ;
 
 export function find (url) {

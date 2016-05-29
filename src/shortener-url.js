@@ -13,7 +13,7 @@ log = debug('alimd:shortener:url'),
 
 dbPath = getEnv('AliMD_HOME') || process.env.HOME + '/ali.md.db',
 
-db = new filedb(`${dbPath}/urls.json`),
+db = new filedb(`${dbPath}/urls.json`)
 ;
 
 export function cleanUrl (path) {
