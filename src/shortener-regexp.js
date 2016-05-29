@@ -21,9 +21,10 @@ export function find (url) {
 
   var item;
   _.each(db.data, (val, short) => {
+    // log(val, short);
     if (typeof short === 'string' && short.length) {
       let regexp = new RegExp(short, 'i');
-      if (val.match(regexp)) {
+      if (url.match(regexp)) {
         item = {
           url: val,
           // short: short,
@@ -34,9 +35,16 @@ export function find (url) {
     }
   });
 
-  return item ?
-    url.replace(item.shortRegexp, item.url)
-    : false
+  log(item);
+
+  if (item) {
+    let newurl = url.replace(item.shortRegexp, item.url);
+    log(newurl);
+    return {url: newurl};
+  }
+  else {
+    return false;
+  }
 }
 
 export function addurl(short, url) {

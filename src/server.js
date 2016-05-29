@@ -126,7 +126,7 @@ addurlPage = (req, res) => {
       <input type="text" name="short" value="${req.url.post.short || ''}" placeholder="short" />
       <input type="text" name="url" value="${req.url.post.url || ''}" placeholder="url" />
       <input type="password" name="pass" value="" placeholder="password" />
-      <input type="submit" value="Save ..." />
+      <input type="submit" value="Save" />
     </form>
     </body></html>`);
   }
