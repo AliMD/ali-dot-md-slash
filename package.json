@@ -1,6 +1,6 @@
 {
   "name": "ali.md",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Ali.MD Url Shortener Node Service",
   "main": "index.js",
   "scripts": {
