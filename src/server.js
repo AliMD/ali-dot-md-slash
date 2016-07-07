@@ -23,7 +23,7 @@ config = {
   notFound: getEnv('AliMD_NOTFOUND') || '/404/',
   addurl: getEnv('AliMD_ADDURL') || '/addurl',
   adminPass: getEnv('AliMD_ADMIN_PASS') || 'pass',
-  userNewRequestUrl: getEnv('AliMD_USER_NEW_REQUEST_URL') || 'https://github.com/AliMD/alimd/issues/new'
+  userNewRequestUrl: getEnv('AliMD_USER_NEW_REQUEST_URL') || 'https://github.com/AliMD/ali.md/issues/new'
 },
 
 main = () => {
